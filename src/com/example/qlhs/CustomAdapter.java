@@ -18,26 +18,29 @@ public class CustomAdapter extends ArrayAdapter {
 
     public CustomAdapter(Context context, ArrayList<MainActivity.HocSinh> objects) {
         super(context, R.layout.list_row , objects);
-        items = objects;
+        this.items = objects;
         this.context = context;
     }
 
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        
+    	ViewHolder holder;
 
         if(convertView == null)
         {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            convertView = inflater.inflate(R.layout.list_row, null);
-
+            convertView = inflater.inflate(R.layout.list_row, parent, false);
+			
             holder = new ViewHolder();
             holder.maHS= (TextView) convertView.findViewById(R.id.maHS);
             holder.tenHS= (TextView) convertView.findViewById(R.id.tenHS);
 
             convertView.setTag(holder);
-        } else {
+        } 
+        else 
+        {
             holder = (ViewHolder) convertView.getTag();
         }
 
@@ -45,7 +48,9 @@ public class CustomAdapter extends ArrayAdapter {
         MainActivity.HocSinh hs = items.get(position);
         holder.maHS.setText(hs.getMaHS());
         holder.tenHS.setText(hs.getTenHS());
-
+        holder.maHS.setId(position);
+        holder.tenHS.setId(position);
+        
         return convertView;
     }
 

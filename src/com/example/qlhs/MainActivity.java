@@ -32,6 +32,8 @@ public class MainActivity extends Activity {
     private Spinner spnLop;
     private Button btnTai;
     private ListView lstHocSinh;
+    private CustomAdapter adapter;
+    private ArrayList<HocSinh> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +48,16 @@ public class MainActivity extends Activity {
         spnLop.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, classes));
 
         lstHocSinh = (ListView) findViewById(R.id.lstHocSinh);
-
+        data = new ArrayList<HocSinh>();
+        adapter = new CustomAdapter(this, data);
+        lstHocSinh.setAdapter(adapter);
+        
         btnTai = (Button) findViewById(R.id.btnTai);
         btnTai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lstHocSinh.removeAllViewsInLayout();
 
-                ArrayList<HocSinh> data = new ArrayList<HocSinh>();
+            	data.clear();
                 data.add(new HocSinh("Mã học sinh", "Tên"));
 
                 String className = (String) spnLop.getSelectedItem();
@@ -68,7 +72,7 @@ public class MainActivity extends Activity {
                     data.add(new HocSinh(maHS, tenHS));
                 }
 
-                lstHocSinh.setAdapter(new CustomAdapter(getApplicationContext(), data));
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -124,6 +128,7 @@ public class MainActivity extends Activity {
         while (cur.moveToNext()) {
             result.add(cur.getString(1));
         }
+        
         return result;
     }
 
